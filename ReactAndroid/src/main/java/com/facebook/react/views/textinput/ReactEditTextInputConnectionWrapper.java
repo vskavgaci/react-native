@@ -130,12 +130,16 @@ class ReactEditTextInputConnectionWrapper extends InputConnectionWrapper {
   // in each case, respectively.
   @Override
   public boolean sendKeyEvent(KeyEvent event) {
+    boolean isNumberKey = event.getUnicodeChar() < 58 && event.getUnicodeChar() > 47;
     if (event.getAction() == KeyEvent.ACTION_DOWN) {
       if (event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
         dispatchKeyEvent(BACKSPACE_KEY_VALUE);
       } else if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
         dispatchKeyEvent(ENTER_KEY_VALUE);
+      } else if (isNumberKey) {
+        dispatchKeyEvent(String.valueOf(event.getNumber()));
       }
+      
     }
     return super.sendKeyEvent(event);
   }
